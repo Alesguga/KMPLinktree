@@ -10,6 +10,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,11 +24,16 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Preview
 @Composable
-fun App() {
+fun app() {
     MaterialTheme {
         Column(
             Modifier
-                .background(color = Color.DarkGray)
+                .background(
+                    brush = GradientBackgroundBrush (
+                        isVerticalGradient = false,
+                        colors = gradientColors
+                    )
+                )
                 .fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(Modifier.height(30.dp))
@@ -39,7 +46,7 @@ fun App() {
             Spacer(Modifier.height(8.dp))
             Text("@alesguga", fontSize = 30.sp, color = Color.White, fontWeight = FontWeight.W700)
             Spacer(Modifier.height(8.dp))
-            Text("Made with KMP", color = Color.Gray, fontSize = 12.sp)
+            Text("Made with KMP", color = Color.White, fontSize = 14.sp)
             Spacer(Modifier.height(12.dp))
             LazyColumn {
                 items(LinksProvider.items) {
@@ -51,4 +58,30 @@ fun App() {
     }
 }
 
+@Composable
+private fun GradientBackgroundBrush(
+    isVerticalGradient: Boolean,
+    colors: List<Color>
+): Brush {
+    val endOffset = if (isVerticalGradient) {
+        Offset(0f, Float.POSITIVE_INFINITY)
+    } else {
+        Offset(Float.POSITIVE_INFINITY, 0f)
+    }
 
+    return Brush.linearGradient(
+        colors = colors,
+        start = Offset.Zero,
+        end = endOffset
+    )
+
+
+}
+val gradientColors = listOf(
+    Color(0xFF405DE6),
+    Color(0xFF5851DB),
+    Color(0xFF833AB4),
+    Color(0xFFC13584),
+    Color(0xFFE1306C),
+    Color(0xFFFD1D1D)
+)
